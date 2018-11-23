@@ -21,6 +21,7 @@ find_package(TinyXML REQUIRED)
 catkin_package(
   INCLUDE_DIRS
     include
+  LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS
     roscpp
     tf
@@ -40,7 +41,7 @@ set(CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}") # C++ 11
 set(CMAKE_CXX_FLAGS "-Wreturn-type ${CMAKE_CXX_FLAGS}") # Return type checking
 
 
-add_library(wire
+add_library(${PROJECT_NAME}
     src/WorldModelROS.cpp
     src/models/FixedState.cpp
     src/core/datatypes.cpp
@@ -78,11 +79,11 @@ add_library(wire
     
 )
 
-target_link_libraries(wire ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${TinyXML_LIBRARIES})
 
 # ROS nodes
 add_executable(wire_server src/world_model.cpp) 
-target_link_libraries(wire_server wire)
+target_link_libraries(wire_server ${PROJECT_NAME})
 
 add_executable(dummy_publisher src/dummy_evidence_publisher.cpp) 
-target_link_libraries(dummy_publisher wire)
+target_link_libraries(dummy_publisher ${PROJECT_NAME})
